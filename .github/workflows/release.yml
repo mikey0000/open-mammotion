@@ -66,9 +66,10 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: 
+          files: |
             dist/*.whl
             dist/*.tar.gz
+            dist/*.attestation
           generate_release_notes: true
           prerelease: ${{ steps.version.outputs.prerelease }}
         env:
