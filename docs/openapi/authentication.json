@@ -1,0 +1,121 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Mammotion Authentication API",
+    "contact": {
+      "name": "Mammotion Account Server"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://id.mammotion.com/"
+    }
+  ],
+  "paths": {
+    "/oauth2/token": {
+      "post": {
+        "tags": [
+          "OAuth2"
+        ],
+        "summary": "OAuth2 login",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "client_id",
+                  "client_secret",
+                  "grant_type"
+                ],
+                "properties": {
+                  "client_id": {
+                    "type": "string",
+                    "description": "client_id",
+                    "default": ""
+                  },
+                  "client_secret": {
+                    "type": "string",
+                    "description": "client_secret",
+                    "default": ""
+                  },
+                  "grant_type": {
+                    "type": "string",
+                    "description": "grant_type：refresh_token ｜ client_credentials",
+                    "default": "client_credentials"
+                  },
+                  "refresh_token": {
+                    "type": "string",
+                    "description": "refresh_token",
+                    "default": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultDataMapStringObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResultDataMapStringObject": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "msgTitle": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AccessTokenVo"
+          }
+        }
+      },
+      "AccessTokenVo": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "access_token"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "refresh_token"
+          },
+          "token_type": {
+            "type": "string",
+            "description": "token_type"
+          },
+          "expires_in": {
+            "type": "integer",
+            "description": "expires_in",
+            "format": "int32"
+          }
+        },
+        "description": "AccessTokenVo"
+      }
+    }
+  },
+  "x-openapi": {
+    "x-setting": null,
+    "x-markdownFiles": []
+  }
+}

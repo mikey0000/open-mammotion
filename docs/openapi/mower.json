@@ -1,0 +1,1758 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Mammotion Mower APIs",
+    "description": "Global Authorization Required",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api-open.mammotion.com"
+    }
+  ],
+  "security": [
+    {
+      "Authorization": [],
+      "Accept-Language": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Mower information",
+      "description": "These APIs can retrieve mower information."
+    },
+    {
+      "name": "HA local network",
+      "description": "HA local network configuration APIs"
+    },
+    {
+      "name": "Mower work report",
+      "description": "Work report query APIs for mower devices"
+    },
+    {
+      "name": "Mower action command",
+      "description": "Mower action command management APIs"
+    }
+  ],
+  "paths": {
+    "/v1/mower/ws/ticket": {
+      "post": {
+        "tags": [
+          "Mower action command"
+        ],
+        "summary": "Issue LAN WebSocket connection ticket",
+        "description": "Exchange a short-lived signed ticket for establishing a local WSS connection to the mower",
+        "operationId": "issueWsTicket",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WsTicketReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WsTicket"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/work-reports/summary": {
+      "post": {
+        "tags": [
+          "Mower work report"
+        ],
+        "summary": "Summarize work reports",
+        "description": "Query aggregated work report statistics for a mower device",
+        "operationId": "summarizeWorkReports",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkReportPageReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WorkReportSummary"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/work-reports/search": {
+      "post": {
+        "tags": [
+          "Mower work report"
+        ],
+        "summary": "Search work reports",
+        "description": "Query paginated historical work reports for a mower device",
+        "operationId": "searchWorkReports",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkReportPageReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WorkReportPage"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/material/fetch": {
+      "post": {
+        "tags": [
+          "Mower information"
+        ],
+        "summary": "Fetch device material and map files",
+        "description": "Trigger the mower to upload material and map files to the cloud. Use together with the SSE subscription API to receive pushed map/material data.",
+        "operationId": "fetchDeviceMaterial",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetDeviceMaterialReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/DeviceMaterial"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/error-codes/search": {
+      "post": {
+        "tags": [
+          "Mower information"
+        ],
+        "summary": "Search device error codes",
+        "description": "Query paginated device fault/error code records",
+        "operationId": "searchDeviceErrorCodes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceErrorCodePageReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/DeviceErrorCodePage"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/action": {
+      "post": {
+        "tags": [
+          "Mower action command"
+        ],
+        "summary": "Work operation",
+        "description": "Aggregated multiple work operation commands",
+        "operationId": "action",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkActionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "description": "Response message",
+                      "example": "Success"
+                    },
+                    "msgTitle": {
+                      "type": "string",
+                      "description": "Response message title",
+                      "example": "Operation Successful"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WorkAction"
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "description": "Request identifier for tracing",
+                      "example": 176853488788872870010
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/ha/local-network/save": {
+      "post": {
+        "tags": [
+          "HA local network"
+        ],
+        "summary": "Save HA local network configuration",
+        "description": "Save or update HA local network configuration in batch and dispatch to devices",
+        "operationId": "save",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceHaLocalConfigSaveReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DeviceHaLocalConfigVo"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/ha/local-network/query": {
+      "post": {
+        "tags": [
+          "HA local network"
+        ],
+        "summary": "Query HA local network configuration",
+        "description": "Query HA local network configuration by device or list all configured devices",
+        "operationId": "query",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceHaLocalConfigQueryReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DeviceHaLocalConfigVo"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/devices/subscriptions": {
+      "post": {
+        "tags": [
+          "Mower information"
+        ],
+        "summary": "Create subscription for specified vehicle material & property data",
+        "description": "Create subscriptions targeting designated vehicle data including materials, maps and property values. Only mower model LUBA 3 AWD is supported for this subscription capability. The number of devices per request cannot exceed 20. Each subscription is valid for 10 minutes after creation, and you need to re-initiate the subscription after expiration. After calling this subscription interface successfully, you must establish an SSE long connection to receive real-time push data.\n\n# SSE Long Connection Access Guide\n\n<b>Request Info</b></br>\n\nRequest URL: GET https://api-open.mammotion.com/developer-sse/api/client/sse<br/>Request Method: GET<br/>Response MIME Type: text/event-stream<br/>\n\n\n<b>Mandatory Request Headers</b></br>\n\n- Authorization: Bearer {your-access-token}          // Developer platform identity authentication token\n- SSE-Client: developer                             // Fixed client identification value, must be passed unchanged\n- Accept: text/event-stream                        // Mandatory header to declare acceptance of SSE streaming data\n\n<b>Execution Sequence Requirement</b></br>\n\nCall this subscription API first (/v1/devices/subscriptions), then establish the SSE connection. No device business data will be pushed if connected in reverse order.\n\n<b>Special SSE Push Messages Processing Specification</b></br>\n\n| Message Content | Message Type | Client Processing Suggestion |\n|------------------------|--------------------------|--------------------------------------------------------------------------------|\n| `:: Connect to server successful ::` | Connection initialization message | Mark the SSE link is ready to receive business data |\n| `:: heartbeat ::` | Periodic heartbeat packet | Directly ignore this message, it is only used for gateway link keep-alive |\n| `{\"pushTag\":\"sc\",\"pushType\":\"1\"}` | Server side kick-off notification | Gracefully close current connection. DO NOT perform automatic reconnection to avoid infinite connection preemption loops. This case is usually triggered when another SSE connection is established under the same developer account. |\n\n<b>Connection Timeout & Subscription Rules</b></br>\n\n1. Idle cleanup rule: The server will actively close connections without any data interaction for 10 consecutive minutes.\n2. Subscription expiration handling: Valid for 10 minutes. After expiration, the SSE channel remains online normally, but the server stops pushing business data. Re-call this subscription interface to resume data push.\n\n<b>Debug Specification (STRICTLY FORBIDDEN to use built-in web debugging tool on document page)</b></br>\n\nUsing the page-built SSE debugger will generate massive zombie idle connections on the server side, and may kick out your formal running SSE connection under the same account.\nPlease use the following curl command for local debugging:\n```bash\ncurl -N \\\n  -H \"Authorization: Bearer ReplaceWithYourRealAccessToken\" \\\n  -H \"SSE-Client: developer\" \\\n  -H \"Accept: text/event-stream\" \\\n  https://api-open.mammotion.com/developer-sse/api/client/sse\n```\n\n<b>Common HTTP Status Codes & Connection Closing Causes</b></br>\n\n- 200 OK: SSE streaming connection established normally\n- 401 Unauthorized: Token invalid, expired or authentication verification failed\n- 403 Forbidden: Insufficient access permission to create SSE connection\nThe server actively closes connections for these reasons: subscription expiry, long-term idle timeout, server-side kick-out, manual termination.",
+        "operationId": "subscribeDeviceMaterial",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "description": "List of device material property parameters to subscribe",
+                "items": {
+                  "$ref": "#/components/schemas/DeviceSubscriptionReq"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request processed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "description": "Response message text",
+                      "example": "Success"
+                    },
+                    "msgTitle": {
+                      "type": "string",
+                      "description": "Prompt title text",
+                      "example": "Operation Successful"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/DeviceMaterial"
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "description": "Unique trace ID for request link tracking"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mowers": {
+      "get": {
+        "tags": [
+          "Mower information"
+        ],
+        "summary": "Get the list of devices associated with the account",
+        "description": "Get the list of devices associated with the account",
+        "operationId": "listByUser",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "description": "Response message",
+                      "example": "Success"
+                    },
+                    "msgTitle": {
+                      "type": "string",
+                      "description": "Response message title",
+                      "example": "Operation Successful"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DeviceInfo"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "description": "Request identifier for tracing",
+                      "example": 176853488788872870010
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/{deviceId}": {
+      "get": {
+        "tags": [
+          "Mower information"
+        ],
+        "summary": "Get detail of device by id",
+        "description": "Get detail of device by id",
+        "operationId": "findByDeviceId",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The unique identifier of device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "description": "Response message",
+                      "example": "Success"
+                    },
+                    "msgTitle": {
+                      "type": "string",
+                      "description": "Response message title",
+                      "example": "Operation Successful"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/DeviceDetail"
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "description": "Request identifier for tracing",
+                      "example": 176853488788872870010
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/{deviceId}/work-reports/{workId}": {
+      "get": {
+        "tags": [
+          "Mower work report"
+        ],
+        "summary": "Get work report detail",
+        "description": "Retrieve detailed information for a specific work report, including work parameters and map file URL",
+        "operationId": "getWorkReportDetail",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "Device ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workId",
+            "in": "path",
+            "description": "Work ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WorkReportDetail"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/{deviceId}/work-params": {
+      "get": {
+        "tags": [
+          "Mower action command"
+        ],
+        "summary": "Get current work parameters",
+        "description": "Query real-time working parameters of the specified mower device",
+        "operationId": "queryCurrentWorkParam",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "Unique identifier of mower device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "description": "Response message",
+                      "example": "Success"
+                    },
+                    "msgTitle": {
+                      "type": "string",
+                      "description": "Response message title",
+                      "example": "Operation Successful"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/workParam"
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "description": "Request identifier for tracing",
+                      "example": 176853488788872870010
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    },
+    "/v1/mower/{deviceId}/plan": {
+      "get": {
+        "tags": [
+          "Mower action command"
+        ],
+        "summary": "Get work task list",
+        "description": "Retrieve the list of available work tasks for a specific mower device",
+        "operationId": "getWorkTask",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The unique identifier of device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "msg": {
+                      "type": "string",
+                      "description": "Response message",
+                      "example": "Success"
+                    },
+                    "msgTitle": {
+                      "type": "string",
+                      "description": "Response message title",
+                      "example": "Operation Successful"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WorkTask"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "description": "Request identifier for tracing",
+                      "example": 176853488788872870010
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": [],
+            "Accept-Language": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WsTicketReq": {
+        "required": [
+          "deviceName",
+          "timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceName": {
+            "type": "string",
+            "description": "Device name (deviceName)"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Client Unix timestamp in seconds, used for clock skew validation",
+            "format": "int64"
+          },
+          "ip": {
+            "type": "string",
+            "description": "Allowed client IP; omit or empty to skip source IP binding"
+          }
+        },
+        "description": "Ticket request parameters"
+      },
+      "WsTicket": {
+        "type": "object",
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "description": "Unique ticket ID"
+          },
+          "productKey": {
+            "type": "string",
+            "description": "Product key"
+          },
+          "deviceName": {
+            "type": "string",
+            "description": "Device name (deviceName)"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID"
+          },
+          "clientId": {
+            "type": "string",
+            "description": "OAuth client_id, corresponds to JWT aud"
+          },
+          "allowedIp": {
+            "type": "string",
+            "description": "Allowed client IP; empty string means the mower skips source IP validation"
+          },
+          "iat": {
+            "type": "integer",
+            "description": "Issued at, Unix timestamp in seconds",
+            "format": "int64"
+          },
+          "exp": {
+            "type": "integer",
+            "description": "Expiration time, Unix timestamp in seconds, aligned with access_token",
+            "format": "int64"
+          },
+          "sign": {
+            "type": "string",
+            "description": "HMAC-SHA256 signature, lowercase hex"
+          }
+        },
+        "description": "LAN WebSocket connection short ticket"
+      },
+      "WorkReportPageReq": {
+        "required": [
+          "deviceId"
+        ],
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Page size",
+            "format": "int32",
+            "example": 10
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Page number, starting from 1",
+            "format": "int32",
+            "example": 1
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "Device ID"
+          },
+          "endWorkTimeStart": {
+            "type": "integer",
+            "description": "Work end time range start (13-digit millisecond timestamp)",
+            "format": "int64"
+          },
+          "endWorkTimeEnd": {
+            "type": "integer",
+            "description": "Work end time range end (13-digit millisecond timestamp)",
+            "format": "int64"
+          },
+          "workType": {
+            "type": "integer",
+            "description": "Work type: 1-single, 2-scheduled, 3-drop mow, 4-resume",
+            "format": "int32"
+          },
+          "workResult": {
+            "type": "integer",
+            "description": "Work result: 0-unknown, 1-working, 2-paused, 3-user stopped, 4-interrupted, 5-completed",
+            "format": "int32"
+          }
+        },
+        "description": "Work report page query parameters"
+      },
+      "WorkReportSummary": {
+        "type": "object",
+        "properties": {
+          "saveTime": {
+            "type": "number",
+            "description": "Estimated time saved in minutes"
+          },
+          "carbonReduction": {
+            "type": "number",
+            "description": "Estimated carbon reduction in grams"
+          },
+          "workCount": {
+            "type": "integer",
+            "description": "Total work count",
+            "format": "int32"
+          },
+          "totalWorkArea": {
+            "type": "number",
+            "description": "Total work area in square meters"
+          }
+        },
+        "description": "Work report aggregated summary"
+      },
+      "WorkReport": {
+        "type": "object",
+        "properties": {
+          "workId": {
+            "type": "string",
+            "description": "Work ID"
+          },
+          "endWorkTime": {
+            "type": "integer",
+            "description": "Work end time (13-digit millisecond timestamp)",
+            "format": "int64"
+          },
+          "workType": {
+            "type": "integer",
+            "description": "Work type: 1-single, 2-scheduled, 3-drop mow, 4-resume",
+            "format": "int32"
+          },
+          "workResult": {
+            "type": "integer",
+            "description": "Work result: 0-unknown, 1-working, 2-paused, 3-user stopped, 4-interrupted, 5-completed",
+            "format": "int32"
+          },
+          "workProgress": {
+            "type": "number",
+            "description": "Completion percentage"
+          },
+          "workArea": {
+            "type": "number",
+            "description": "Work area in square meters"
+          },
+          "workTimeUsed": {
+            "type": "integer",
+            "description": "Work duration in seconds",
+            "format": "int64"
+          }
+        },
+        "description": "Work report summary item"
+      },
+      "WorkReportPage": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "description": "Current page records",
+            "items": {
+              "$ref": "#/components/schemas/WorkReport"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total record count",
+            "format": "int64"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Current page number",
+            "format": "int64"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Page size",
+            "format": "int64"
+          },
+          "pages": {
+            "type": "integer",
+            "description": "Total pages",
+            "format": "int64"
+          }
+        },
+        "description": "Work report page response"
+      },
+      "GetDeviceMaterialReq": {
+        "required": [
+          "deviceIds"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceIds": {
+            "type": "array",
+            "description": "Device ID list",
+            "items": {
+              "type": "string",
+              "description": "Device ID list"
+            }
+          }
+        },
+        "description": "Device material fetch parameters"
+      },
+      "DeviceMaterial": {
+        "type": "object",
+        "properties": {
+          "commandResult": {
+            "type": "boolean",
+            "description": "Command issuance result"
+          },
+          "resultMessage": {
+            "type": "string",
+            "description": "Command Execution Result"
+          }
+        },
+        "description": "Device Material"
+      },
+      "DeviceErrorCodePageReq": {
+        "required": [
+          "deviceId"
+        ],
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Page size",
+            "format": "int32",
+            "example": 10
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Page number, starting from 1",
+            "format": "int32",
+            "example": 1
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "Device ID"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date (inclusive)",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date (inclusive)",
+            "format": "date"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Error code keyword filter"
+          }
+        },
+        "description": "Error code page query parameters"
+      },
+      "DeviceErrorCode": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code",
+            "format": "int32"
+          },
+          "implication": {
+            "type": "string",
+            "description": "Error code description"
+          },
+          "solution": {
+            "type": "string",
+            "description": "Suggested solution"
+          },
+          "gmtCreate": {
+            "type": "integer",
+            "description": "Alert timestamp (milliseconds)",
+            "format": "int64"
+          },
+          "createTime": {
+            "type": "integer",
+            "description": "Record create time (milliseconds)",
+            "format": "int64"
+          },
+          "faultLevel": {
+            "type": "integer",
+            "description": "Fault level: 1-info, 2-warning, 3-critical",
+            "format": "int32"
+          },
+          "priority": {
+            "type": "integer",
+            "description": "Notification priority: 0-none, 1-info, 2-warning, 3-critical",
+            "format": "int32"
+          },
+          "imageList": {
+            "type": "array",
+            "description": "Image resources",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowCodeFileInfo"
+            }
+          },
+          "videoList": {
+            "type": "array",
+            "description": "Video resources",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowCodeFileInfo"
+            }
+          },
+          "buttonList": {
+            "type": "array",
+            "description": "Action button resources",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowCodeFileInfo"
+            }
+          }
+        },
+        "description": "Device error code record"
+      },
+      "DeviceErrorCodePage": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "description": "Current page records",
+            "items": {
+              "$ref": "#/components/schemas/DeviceErrorCode"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total record count",
+            "format": "int64"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Current page number",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Page size",
+            "format": "int32"
+          },
+          "hasMore": {
+            "type": "boolean",
+            "description": "Whether more pages exist"
+          }
+        },
+        "description": "Device error code page response"
+      },
+      "WorkflowCodeFileInfo": {
+        "type": "object",
+        "properties": {
+          "buttonName": {
+            "type": "string",
+            "description": "Button name"
+          },
+          "buttonType": {
+            "type": "string",
+            "description": "Button type code"
+          },
+          "url": {
+            "type": "string",
+            "description": "Resource URL"
+          },
+          "sort": {
+            "type": "integer",
+            "description": "Sort order",
+            "format": "int32"
+          }
+        },
+        "description": "Error code attachment resource"
+      },
+      "WorkActionParamOptions": {
+        "type": "object",
+        "properties": {
+          "taskName": {
+            "type": "string",
+            "description": "Task name. Required when action is START"
+          }
+        },
+        "description": "Available parameters for device actions"
+      },
+      "WorkActionRequest": {
+        "required": [
+          "action",
+          "deviceId"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "description": "deviceId"
+          },
+          "action": {
+            "type": "string",
+            "description": "Available device actions. One of the following values:\n\n\n- `CMD_START` — No plan start mowing immediately. The mower will start working.\n- `START` — Start mowing immediately. The mower will start working.\n- `PAUSE` — Pause the current mowing operation. Can be resumed later.\n- `RESUME` — Resume mowing from a paused state.\n- `STOP` — Stop the mower immediately and terminate the current task.\n- `RETURN` — Return to the charging dock.\n- `CANCEL_RETURN` — Cancel the ongoing return-to-dock command.\n"
+          },
+          "params": {
+            "$ref": "#/components/schemas/WorkActionParamOptions"
+          }
+        },
+        "description": "Work request parameters"
+      },
+      "WorkAction": {
+        "type": "object",
+        "properties": {
+          "commandResult": {
+            "type": "boolean",
+            "description": "Command issuance result"
+          },
+          "resultMessage": {
+            "type": "string",
+            "description": "Command issuance message"
+          }
+        },
+        "description": "Work operation response"
+      },
+      "DeviceHaLocalConfigSaveItem": {
+        "required": [
+          "deviceName",
+          "enabled"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceName": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "integer",
+            "description": "HA local network switch: 0=off, 1=on",
+            "format": "int32"
+          }
+        },
+        "description": "HA local network device configuration item"
+      },
+      "DeviceHaLocalConfigSaveReq": {
+        "required": [
+          "clientId",
+          "devices"
+        ],
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string"
+          },
+          "redirectUri": {
+            "type": "string",
+            "description": "HA OAuth redirect URI"
+          },
+          "devices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceHaLocalConfigSaveItem"
+            }
+          }
+        },
+        "description": "Save request parameters"
+      },
+      "DeviceHaLocalConfigVo": {
+        "type": "object",
+        "properties": {
+          "deviceName": {
+            "type": "string",
+            "description": "Device name"
+          },
+          "clientId": {
+            "type": "string",
+            "description": "OAuth client_id"
+          },
+          "redirectUri": {
+            "type": "string",
+            "description": "HA OAuth redirect URI"
+          },
+          "enabled": {
+            "type": "integer",
+            "description": "HA local network switch: 0=off, 1=on",
+            "format": "int32"
+          },
+          "dispatchStatus": {
+            "type": "integer",
+            "description": "Dispatch status: 0=pending, 1=success, 2=failed",
+            "format": "int32"
+          },
+          "failReason": {
+            "type": "string",
+            "description": "Dispatch failure reason"
+          }
+        },
+        "description": "HA local network configuration"
+      },
+      "DeviceHaLocalConfigQueryReq": {
+        "required": [
+          "clientId"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceName": {
+            "type": "string",
+            "description": "Device name; returns all configured devices when omitted"
+          },
+          "clientId": {
+            "type": "string"
+          }
+        },
+        "description": "Query request parameters"
+      },
+      "DeviceSubscriptionReq": {
+        "required": [
+          "deviceId",
+          "properties"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "description": "Unique identifier of the target device",
+            "example": "DEVICE_001"
+          },
+          "properties": {
+            "type": "array",
+            "description": "Array of property keys to subscribe, supported keys as below:\n- `DEV_ST` — Main operating status of the device\n- `CHG_ST` — Device charging status\n- `SELF_CHK` — Device self-check status code\n- `SENS_ST` — Sensor working status\n- `LOC_SRC` — Location source status\n- `BAT_PCT` — Remaining battery percentage\n- `BMS_INFO` — Detailed battery management system data\n- `COORD` — Real-time device coordinate position\n- `NET_ST` — Network connection information\n- `WK_PRG` — Mowing work progress\n- `KNF_HGT` — Cutting blade height setting\n- `KNF_ST` — Cutting blade running status\n- `WK_TRK` — Mowing track trajectory data\n- `DEV_VER` — Device firmware version info\n- `BASE_STN` — Charging base station status\n- `OTA_PRG` — OTA firmware upgrade progress\n- `MAP_UPLD` — Map file upload progress\n- `LOG_SYNC` — Device log synchronization progress\n- `DEV_INF` — Device nickname modification event\n- `TSK_CHG` — Work schedule task change event\n- `ENR_BIND` — New device binding event\n- `ENR_UNBIND` — Device unbinding event",
+            "example": [
+              "DEV_ST",
+              "BAT_PCT",
+              "COORD"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Subscription request model for specified vehicle material properties"
+      },
+      "DeviceInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Device identifier",
+            "example": "123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Device name",
+            "example": "Mower"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "Nickname of device",
+            "example": "My Mower"
+          },
+          "model": {
+            "type": "string",
+            "description": "model of device",
+            "example": "Luba2 AWD 5000"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon url of the device",
+            "example": "https://XXXX/XX"
+          },
+          "online": {
+            "type": "integer",
+            "description": "Online status of device : 1 indicates online, 0 indicates offline",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "description": "Response data object for device information"
+      },
+      "DeviceDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Device identifier",
+            "example": "123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Device name",
+            "example": "Mower"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "Nickname of the device",
+            "example": "My Mower"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model of the device",
+            "example": "Luba2 AWD 5000"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon url of the device",
+            "example": "https://XXXX/XX"
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the device",
+            "example": "1.0.0.1"
+          },
+          "online": {
+            "type": "integer",
+            "description": "Online status of the device : 1 indicates online, 0 indicates offline",
+            "format": "int32",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the device. One of the following values:\n\n\n\n- `Standby` — Device is idle and ready for operation.\n- `Working` — Device is currently performing a task.\n- `Paused` — Operation is temporarily paused.\n- `Mapping` — Creating or updating the lawn map.\n- `Updating` — System firmware is being updated.\n- `Offline` — Device is disconnected from the server.\n- `Returning` — Returning to the charging dock.\n- `Abnormal` — Device has encountered an error or abnormal condition and may require user intervention.\n",
+            "example": "StandBy"
+          },
+          "batteryLevel": {
+            "type": "integer",
+            "description": "Battery level of the device",
+            "format": "int32",
+            "example": 100
+          },
+          "chargeStatus": {
+            "type": "integer",
+            "description": "Charging status : 1 indicates charging, 0 indicates not charging",
+            "format": "int32",
+            "example": 1
+          },
+          "network": {
+            "$ref": "#/components/schemas/Network"
+          }
+        },
+        "description": "Response data object for device detail information"
+      },
+      "Network": {
+        "type": "object",
+        "properties": {
+          "usedNetwork": {
+            "type": "string",
+            "description": "Current network connection type : 1 indicates Wi-Fi, 2 indicates 4G)",
+            "example": "1"
+          },
+          "wifiAvailable": {
+            "type": "boolean",
+            "description": "Whether Wi-Fi is available",
+            "example": true
+          },
+          "wifiRssi": {
+            "type": "integer",
+            "description": "Wi-Fi RSSI value in dBm",
+            "format": "int32",
+            "example": -46
+          },
+          "wifiIp": {
+            "type": "string",
+            "description": "Wi-Fi IP address",
+            "example": "192.168.1.100"
+          },
+          "cellularAvailable": {
+            "type": "boolean",
+            "description": "Whether cellular network is available",
+            "example": true
+          },
+          "cellularRssi": {
+            "type": "integer",
+            "description": "cellular network RSSI value in dBm",
+            "format": "int32",
+            "example": -46
+          }
+        },
+        "description": "The network information of the device"
+      },
+      "WorkReportDetail": {
+        "type": "object",
+        "properties": {
+          "workArea": {
+            "type": "number",
+            "description": "Work area in square meters"
+          },
+          "workTimeUsed": {
+            "type": "integer",
+            "description": "Work duration in seconds",
+            "format": "int64"
+          },
+          "saveTime": {
+            "type": "number",
+            "description": "Estimated time saved in minutes"
+          },
+          "carbonReduction": {
+            "type": "number",
+            "description": "Estimated carbon reduction in grams"
+          },
+          "energyConsume": {
+            "type": "number",
+            "description": "Energy consumption in Wh",
+            "format": "double"
+          },
+          "startWorkTime": {
+            "type": "integer",
+            "description": "Work start time (13-digit millisecond timestamp)",
+            "format": "int64"
+          },
+          "endWorkTime": {
+            "type": "integer",
+            "description": "Work end time (13-digit millisecond timestamp)",
+            "format": "int64"
+          },
+          "workType": {
+            "type": "integer",
+            "description": "Work type: 1-single, 2-scheduled, 3-drop mow, 4-resume",
+            "format": "int32"
+          },
+          "jobContent": {
+            "type": "integer",
+            "description": "Job content mode: 0-mow only, 1-collect only, 2-mow and collect",
+            "format": "int32"
+          },
+          "workProcess": {
+            "type": "array",
+            "description": "Work process timeline events",
+            "items": {
+              "$ref": "#/components/schemas/WorkReportDetail.WorkProcess"
+            }
+          },
+          "workParam": {
+            "$ref": "#/components/schemas/workParam"
+          },
+          "mapFilePath": {
+            "type": "string",
+            "description": "Signed CDN URL of the work map file"
+          }
+        },
+        "description": "Work report detail"
+      },
+      "WorkReportDetail.WorkProcess": {
+        "type": "object",
+        "properties": {
+          "timeStamp": {
+            "type": "integer",
+            "description": "Event timestamp (milliseconds)",
+            "format": "int64"
+          },
+          "eventCode": {
+            "type": "integer",
+            "description": "Event code: 0-none, 1-auto start, 2-manual start, 3-auto resume, 4-manual resume, 5-auto pause, 6-manual pause, 7-night animal protection, 8-bad weather protection, 9-do not disturb, 10-low battery recharge, 11-no night work, 12-completed, 13-interrupted, 14-user stopped",
+            "format": "int32"
+          }
+        },
+        "description": "Work process event node"
+      },
+      "workParam": {
+        "type": "object",
+        "properties": {
+          "commandResult": {
+            "type": "boolean",
+            "description": "Command issuance result"
+          },
+          "resultMessage": {
+            "type": "string",
+            "description": "Command issuance result"
+          },
+          "edgeMode": {
+            "type": "integer",
+            "description": "Edge tracing rounds",
+            "format": "int32"
+          },
+          "rideBoundaryDistance": {
+            "type": "number",
+            "description": "Edge overlap",
+            "format": "float"
+          },
+          "channelMode": {
+            "type": "integer",
+            "description": "Bow mode: 0 - normal single bow, 1 - cross, 2 - zoned bow, 3 - no bow",
+            "format": "int32"
+          },
+          "jobContent": {
+            "type": "integer",
+            "description": "Operation mode:  8  - mowing mode, 10 - collecting mode, 12 - mowing & collecting mode",
+            "format": "int32"
+          },
+          "dumpPeriodSqm": {
+            "type": "integer",
+            "description": "Grass collection frequency",
+            "format": "int32"
+          },
+          "knifeHeight": {
+            "type": "integer",
+            "description": "Blade height",
+            "format": "int32"
+          },
+          "speed": {
+            "type": "integer",
+            "description": "Working speed",
+            "format": "int32"
+          },
+          "channelWidth": {
+            "type": "integer",
+            "description": "Bow spacing",
+            "format": "int32"
+          },
+          "toward": {
+            "type": "integer",
+            "description": "Working direction",
+            "format": "int32"
+          },
+          "towardMode": {
+            "type": "integer",
+            "description": "Angle reference system: 0 - relative angle, 1 - absolute angle, 2 - random angle",
+            "format": "int32"
+          },
+          "towardIncludedAngle": {
+            "type": "integer",
+            "description": "Double bow angle",
+            "format": "int32"
+          },
+          "ultraWave": {
+            "type": "integer",
+            "description": "Obstacle avoidance mode:  0/1 - slowtouch (ultrasonic deceleration), 10  - notouch (standard vision, can exit lawn), 11  - nooutlawn (sensitive vision, stay on lawn)",
+            "format": "int32"
+          },
+          "boundaryZigzagOrder": {
+            "type": "integer",
+            "description": "Path execution order: 0 - border first,  1 - bow first",
+            "format": "int32"
+          },
+          "forbiddenAreaCircleTimes": {
+            "type": "integer",
+            "description": "Obstacle perimeter rounds",
+            "format": "int32"
+          },
+          "visualHashs": {
+            "type": "array",
+            "description": "Map file visual hash",
+            "items": {
+              "type": "string",
+              "description": "Map file visual hash"
+            }
+          }
+        },
+        "description": "Current work parameters"
+      },
+      "WorkTask": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "description": "Task identifier"
+          },
+          "taskName": {
+            "type": "string",
+            "description": "Task name"
+          }
+        },
+        "description": "Work task information response"
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "apiKey",
+        "description": "Bearer Token, formal name: Bearer {token}",
+        "name": "Authorization",
+        "in": "header"
+      },
+      "Accept-Language": {
+        "type": "apiKey",
+        "description": "Sets the Accept-Language request header. If not provided, defaults to English (en-US).",
+        "name": "Accept-Language",
+        "in": "header"
+      }
+    }
+  }
+}
