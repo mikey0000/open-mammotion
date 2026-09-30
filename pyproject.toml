@@ -29,6 +29,7 @@ Documentation = "https://github.com/mikey0000/open-mammotion/tree/main/docs"
 
 [dependency-groups]
 dev = [
+    "packaging>=24.0",
     "pre-commit>=4.0",
     "pytest>=8.3",
     "pytest-asyncio>=0.24",

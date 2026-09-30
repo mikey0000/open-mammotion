@@ -1,0 +1,73 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run ty check open_mammotion/
+      - run: uv run pytest
+
+  publish:
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # trusted publishing to PyPI
+      contents: write  # GitHub release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --frozen
+
+      # The tag and the package version are compared after PEP 440 normalisation,
+      # so v0.2.0-beta1, v0.2.0.b1 and v0.2.0b1 all match a 0.2.0b1 package.
+      - name: Check package version matches tag
+        id: version
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          uv run python - "$TAG_VERSION" <<'PY'
+          import importlib.metadata, os, sys
+          from packaging.version import InvalidVersion, Version
+
+          package_version = Version(importlib.metadata.version("open-mammotion"))
+          try:
+              tag_version = Version(sys.argv[1])
+          except InvalidVersion:
+              sys.exit(f"Tag version ({sys.argv[1]}) is not a valid PEP 440 version")
+          if package_version != tag_version:
+              sys.exit(f"Package version ({package_version}) does not match tag version ({tag_version})")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"prerelease={str(package_version.is_prerelease).lower()}\n")
+              fh.write(f"version={package_version}\n")
+          PY
+
+      - run: uv build
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+          print-hash: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+          prerelease: ${{ steps.version.outputs.prerelease }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

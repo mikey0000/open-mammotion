@@ -27,7 +27,8 @@ endpoints already exist in `api/local_network.py`.
   once real 429 behaviour is known (Q4).
 - Typed `Accept-Language` (a `Literal` of the languages the portal lists) once
   Q11 is answered.
-- A published wheel; release workflow tagging `v*`.
+- Configure PyPI trusted publishing for the `release.yml` workflow (tag `v*`)
+  before the first release.
 
 ## Documentation
 
